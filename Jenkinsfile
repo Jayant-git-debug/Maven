@@ -23,7 +23,8 @@ pipeline{
             steps{
                 sh '''
                 docker build -t jayant700/maven-docker-app03:$DOCKER_VERSION .
-                docker container run --name project22 -d jayant700/maven-docker-app03:$DOCKER_VERSION
+                docker container run --name project32 -d jayant700/maven-docker-app03:$DOCKER_VERSION
+                docker stop $(docker ps -q) && docker rm $(docker ps -aq)
                 '''
             }
 
