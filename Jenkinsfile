@@ -49,6 +49,7 @@ pipeline{
                 sh '''
                 docker stop project55
                 docker rm project55
+                '''
 
             }
 
