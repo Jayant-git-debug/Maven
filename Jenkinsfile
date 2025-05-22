@@ -7,7 +7,7 @@ pipeline{
 
     environment{
         ROLE = "Developer"
-        DOCKER_VERSION = "v1"
+        DOCKER_VERSION = "latest"
     }
     stages{
         stage('Clean and Build the code'){
