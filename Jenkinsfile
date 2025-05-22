@@ -14,8 +14,8 @@ pipeline{
             steps{
                 sh '''
                 mvn --version
-                mvn build package
                 mvn compile
+                mvn clean package
                 '''
             }
         }
