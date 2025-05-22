@@ -37,7 +37,7 @@ pipeline{
                 )]) {
                     sh '''
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push jayant700/maven-docker-app02:$DOCKER_VERSION
+                        docker push jayant700/maven-docker-app03:$DOCKER_VERSION
                     '''
                 }
             }
