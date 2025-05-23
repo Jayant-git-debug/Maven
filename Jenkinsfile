@@ -24,7 +24,9 @@ pipeline{
             steps{
                 sh '''
                 docker build -t jayant700/maven-docker-app17 .
-                docker container run --name project17 -dit jayant700/maven-docker-app17
+                docker container run --name project77 -dit jayant700/maven-docker-app17
+                docker stop project77
+                docker rm project77
                 '''
             }
 
