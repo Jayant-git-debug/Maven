@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: app-jb
+spec:
+  replicas: 2
+  selector:
+     matchLables:
+        app: app-jb
+template:
+  metadata:
+    labels: 
+      app: app-jb
+  spec:
+    containers:
+      - name: app-deployment
+        image: jayant700/maven-docker-app017
+          ports : 
+            - containerPort: 80
