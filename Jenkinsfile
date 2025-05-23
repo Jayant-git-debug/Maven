@@ -14,8 +14,9 @@ pipeline{
             steps{
                 sh '''
                 mvn --version
-                mvn build package
                 mvn compile
+                mvn clean package 
+                
                 '''
             }
         }
@@ -23,7 +24,7 @@ pipeline{
             steps{
                 sh '''
                 docker build -t jayant700/maven-docker-app17 .
-                docker conatiner run --name project17 -it jayant700/maven-docker-app17
+                docker container run --name project17 -dit jayant700/maven-docker-app17
                 '''
             }
 
@@ -46,22 +47,22 @@ pipeline{
         }
         stage('Create the Nodes'){
             steps {
-            sh '''
-            eksctl create nodegroup --cluster=labeks-cluster-jenkin --region=ap-south-1 --name=eksdemo1-ng-public1 --node-type=t3.small --nodes=1 --nodes-min=1 --nodes-max=2 --node-volume-size=20 --ssh-access --ssh-public-key=Jenkin --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
-            '''
+               sh '''
+               eksctl create nodegroup --cluster=labeks-cluster-jenkin --region=ap-south-1 --name=eksdemo1-ng-public1 --node-type=t3.small --nodes=1 --nodes-min=1 --nodes-max=2 --node-volume-size=20 --ssh-access --ssh-public-key=Jenkin --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
+               '''
             }
         }
 
         stage('Deployment of the code'){
             steps {
-            sh 'kubectl apply -f  EKS-DEPLOY-APP.yml'
+                sh 'kubectl apply -f  EKS-DEPLOY-APP.yml'
             }
         }
         stage("Delete Container"){
-             stpes {
-                 sh'''
+             steps {
+                 sh '''
                  docker stop project17
-                 docker delete project17
+                 docker rm project17
                  '''
             }
         }
