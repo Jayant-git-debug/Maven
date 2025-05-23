@@ -45,20 +45,30 @@ pipeline{
 
         }
         stage('Create the Nodes'){
-            sh 'eksctl create nodegroup --cluster=labeks-cluster-jenkin --region=ap-south-1 --name=eksdemo1-ng-public1 --node-type=t3.small --nodes=1 --nodes-min=1 --nodes-max=2 --node-volume-size=20 --ssh-access --ssh-public-key=Jenkin --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access'
+            steps {
+            sh '''
+            eksctl create nodegroup --cluster=labeks-cluster-jenkin --region=ap-south-1 --name=eksdemo1-ng-public1 --node-type=t3.small --nodes=1 --nodes-min=1 --nodes-max=2 --node-volume-size=20 --ssh-access --ssh-public-key=Jenkin --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
+            '''
+            }
         }
 
         stage('Deployment of the code'){
+            steps {
             sh 'kubectl apply -f  EKS-DEPLOY-APP.yml'
-        }
-         stage("Delete Container"){
-                 sh'''
-                docker stop project17
-                docker delete project17
-                '''
             }
-
+        }
+        stage("Delete Container"){
+             stpes {
+                 sh'''
+                 docker stop project17
+                 docker delete project17
+                 '''
+            }
         }
 
     }
+
+}
+
+
 
