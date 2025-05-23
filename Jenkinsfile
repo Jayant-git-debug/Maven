@@ -7,23 +7,23 @@ pipeline{
 
     environment{
         ROLE = "Developer"
-        DOCKER_VERSION = "latest"
+        DOCKER_VERSION = "v1"
     }
     stages{
         stage('Clean and Build the code'){
             steps{
                 sh '''
                 mvn --version
+                mvn build package
                 mvn compile
-                mvn clean package
                 '''
             }
         }
         stage('Building the docker Image and Run Container'){
             steps{
                 sh '''
-                docker build -t jayant700/maven-docker-app03:$DOCKER_VERSION .
-                docker container run --name project55 -d jayant700/maven-docker-app03:$DOCKER_VERSION
+                docker build -t jayant700/maven-docker-app17 .
+                docker conatiner run --name project17 -it jayant700/maven-docker-app17
                 '''
             }
 
@@ -37,27 +37,28 @@ pipeline{
                 )]) {
                     sh '''
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push jayant700/maven-docker-app03:$DOCKER_VERSION
+                        docker push jayant700/maven-docker-app17:$DOCKER_VERSION
                     '''
                 }
             }
         
 
         }
-         stage("Delet all container"){
-            steps{
-                sh '''
-                docker stop project55
-                docker rm project55
-                '''
+        stage('Create the Nodes'){
+            sh 'eksctl create nodegroup --cluster=labeks-cluster-jenkin --region=ap-south-1 --name=eksdemo1-ng-public1 --node-type=t3.small --nodes=1 --nodes-min=1 --nodes-max=2 --node-volume-size=20 --ssh-access --ssh-public-key=Jenkin --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access'
+        }
 
+        stage('Deployment of the code'){
+            sh 'kubectl apply -f  EKS-DEPLOY-APP.yml'
+        }
+         stage("Delete Container"){
+                 sh'''
+                docker stop project17
+                docker delete project17
+                '''
             }
 
         }
 
-
-
     }
-
-
 }
