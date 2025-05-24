@@ -7,15 +7,15 @@ metadata:
 spec:
   replicas: 2
   selector:
-     matchLables:
+     matchLabels:
         app: app-jb
-template:
-  metadata:
-    labels: 
-      app: app-jb
-  spec:
-    containers:
-      - name: app-deployment
-        image: jayant700/maven-docker-app017
-          ports : 
+  template:
+    metadata:
+      labels: 
+        app: app-jb
+    spec:
+      containers:
+        - name: app-deployment
+          image: jayant700/maven-docker-app017
+          ports: 
             - containerPort: 80
