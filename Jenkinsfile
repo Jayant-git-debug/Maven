@@ -23,8 +23,8 @@ pipeline{
         stage('Building the docker Image and Run Container'){
             steps{
                 sh '''
-                docker build -t jayant700/maven-docker-app17 .
-                docker container run --name project77 -dit jayant700/maven-docker-app17
+                docker build -t jayant700/maven-docker-app77 .
+                docker container run --name project77 -dit jayant700/maven-docker-app77
                 docker stop project77
                 docker rm project77
                 '''
@@ -40,7 +40,7 @@ pipeline{
                 )]) {
                     sh '''
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push jayant700/maven-docker-app17:$DOCKER_VERSION
+                        docker push jayant700/maven-docker-app77:$DOCKER_VERSION
                     '''
                 }
             }
