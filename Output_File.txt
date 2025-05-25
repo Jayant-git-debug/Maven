@@ -1,0 +1,49 @@
+[ec2-user@ip-172-31-6-189 ~]$ eksctl get cluster
+NAME            REGION          EKSCTL CREATED
+labekscluster   ap-south-1      True
+
+******************************************************************************************************************************************************
+[ec2-user@ip-172-31-6-189 ~]$ eksctl get nodegroup --cluster=labekscluster
+CLUSTER         NODEGROUP               STATUS  CREATED                 MIN SIZE        MAX SIZE        DESIRED CAPACITY        INSTANCE TYPE   IMAGE ID        ASG NAME   TYPE
+labekscluster   eksdemo1-ng-public1     ACTIVE  2025-05-24T18:10:04Z    1               2               1                       t3.small        AL2_x86_64      eks-eksdemo1-ng-public1-50cb81be-68a9-8a29-b8e4-0a182322ce18        managed
+******************************************************************************************************************************************************
+
+[ec2-user@ip-172-31-6-189 ~]$ kubectl get nodes -o wide
+NAME                                           STATUS   ROLES    AGE   VERSION               INTERNAL-IP     EXTERNAL-IP   OS-IMAGE         KERNEL-VERSION                  CONTAINER-RUNTIME
+ip-192-168-37-16.ap-south-1.compute.internal   Ready    <none>   10m   v1.32.3-eks-473151a   192.168.37.16   65.0.108.47   Amazon Linux 2   5.10.236-228.935.amzn2.x86_64   containerd://1.7.27
+******************************************************************************************************************************************************
+
+[ec2-user@ip-172-31-6-189 ~]$ kubectl config view --minify
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://912C54BAA0C2957223F0FE49F3D4288D.gr7.ap-south-1.eks.amazonaws.com
+  name: arn:aws:eks:ap-south-1:912785005127:cluster/labekscluster
+contexts:
+- context:
+    cluster: arn:aws:eks:ap-south-1:912785005127:cluster/labekscluster
+    user: arn:aws:eks:ap-south-1:912785005127:cluster/labekscluster
+  name: arn:aws:eks:ap-south-1:912785005127:cluster/labekscluster
+current-context: arn:aws:eks:ap-south-1:912785005127:cluster/labekscluster
+kind: Config
+preferences: {}
+users:
+- name: arn:aws:eks:ap-south-1:912785005127:cluster/labekscluster
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - --region
+      - ap-south-1
+      - eks
+      - get-token
+      - --cluster-name
+      - labekscluster
+      - --output
+      - json
+      command: aws
+      env: null
+      interactiveMode: IfAvailable
+      provideClusterInfo: false
+******************************************************************************************************************************************************
